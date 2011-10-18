@@ -1,0 +1,1 @@
+@"%~dp0SubWCRev.exe" %1 "%~dp0..\AssemblyRevision.cs" %2
