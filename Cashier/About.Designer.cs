@@ -32,6 +32,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // verLabel
@@ -50,11 +51,11 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(113, 12);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Copyright (R) 2011";
+            this.label2.Text = "Copyright (C) 2011";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(153, 73);
+            this.button1.Location = new System.Drawing.Point(171, 97);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
@@ -71,17 +72,29 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "童装销售";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(45, 77);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(173, 12);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "作者 wangyoucao577@gmail.com";
+            // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(250, 108);
+            this.ClientSize = new System.Drawing.Size(267, 132);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.verLabel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(283, 170);
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(283, 170);
             this.Name = "About";
             this.ShowIcon = false;
             this.Text = "关于";
@@ -97,5 +110,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label3;
     }
 }
