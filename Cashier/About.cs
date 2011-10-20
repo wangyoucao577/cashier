@@ -8,17 +8,21 @@ using System.Windows.Forms;
 
 namespace Cashier
 {
-    public partial class Sale : Form
+    public partial class About : Form
     {
-        public Sale()
+        public About()
         {
             InitializeComponent();
         }
 
-        private void 关于ToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            About about = new About();
-            about.Show();
+            this.Close();
+        }
+
+        private void About_Load(object sender, EventArgs e)
+        {
+            verLabel.Text = AssemblyRevision.FullVersion;
         }
     }
 }
