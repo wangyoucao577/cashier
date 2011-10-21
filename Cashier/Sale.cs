@@ -5,11 +5,15 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace Cashier
 {
     public partial class Sale : Form
     {
+        private DataSource m_dataSource = new DataSource();
+        private ManualResetEvent m_event = new ManualResetEvent(false);
+
         public Sale()
         {
             InitializeComponent();
@@ -45,6 +49,27 @@ namespace Cashier
         {
             SaleConfirm sc = new SaleConfirm();
             sc.Show();
+        }
+
+        private void Sale_Load(object sender, EventArgs e)
+        {
+            m_dataSource.Init("SaleProducts.dat");
+            m_event.Set();
+        }
+
+        private void dataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (1 == e.ColumnIndex)
+            {
+                //m_event.WaitOne();
+                //Clothing clo = m_dataSource.GetClothing((string)dataGridView[1, e.RowIndex].Value);
+                //if (null != clo)
+                //{
+                //    dataGridView[2, e.RowIndex].Value = clo.Name;
+                //    dataGridView[3, e.RowIndex].Value = clo.Name;
+                //}
+                
+            }
         }
     }
 }
