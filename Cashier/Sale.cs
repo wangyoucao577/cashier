@@ -35,5 +35,16 @@ namespace Cashier
         {
             this.Close();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SaleConfirm sc = new SaleConfirm();
+            sc.Show();
+        }
     }
 }
