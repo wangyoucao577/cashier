@@ -218,7 +218,10 @@ namespace Cashier
         {
             
             e.Row.Cells[0].Value = e.Row.Index + 1;
+            e.Row.Cells[3].Value = 0.0;
+            e.Row.Cells[4].Value = 0.0;
             e.Row.Cells[5].Value = 1;
+            e.Row.Cells[6].Value = 0.0;
 
         }
 

@@ -92,7 +92,7 @@
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.退出ToolStripMenuItem.Text = "退出";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
@@ -107,7 +107,7 @@
             // 选项ToolStripMenuItem
             // 
             this.选项ToolStripMenuItem.Name = "选项ToolStripMenuItem";
-            this.选项ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.选项ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.选项ToolStripMenuItem.Text = "选项";
             // 
             // 关于ToolStripMenuItem
@@ -121,7 +121,7 @@
             // 关于ToolStripMenuItem1
             // 
             this.关于ToolStripMenuItem1.Name = "关于ToolStripMenuItem1";
-            this.关于ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.关于ToolStripMenuItem1.Size = new System.Drawing.Size(100, 22);
             this.关于ToolStripMenuItem1.Text = "关于";
             this.关于ToolStripMenuItem1.Click += new System.EventHandler(this.关于ToolStripMenuItem1_Click);
             // 
@@ -286,6 +286,7 @@
             this.saleRecvTextBox.Name = "saleRecvTextBox";
             this.saleRecvTextBox.Size = new System.Drawing.Size(70, 26);
             this.saleRecvTextBox.TabIndex = 3;
+            this.saleRecvTextBox.Text = "0";
             this.saleRecvTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.saleRecvTextBox.TextChanged += new System.EventHandler(this.saleRecvTextBox_TextChanged);
             this.saleRecvTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.saleRecvTextBox_Validating);
@@ -311,6 +312,7 @@
             this.upOffTextBox.ReadOnly = true;
             this.upOffTextBox.Size = new System.Drawing.Size(70, 23);
             this.upOffTextBox.TabIndex = 3;
+            this.upOffTextBox.Text = "0";
             this.upOffTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.upOffTextBox.TextChanged += new System.EventHandler(this.upOffTextBox_TextChanged);
             this.upOffTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.upoffTextBox_Validating);
