@@ -90,6 +90,7 @@
     <Compile Include="SaleConfirm.Designer.cs">
       <DependentUpon>SaleConfirm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ValueMarked.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="图标.ico" />

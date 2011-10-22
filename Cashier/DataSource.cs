@@ -42,6 +42,7 @@ namespace Cashier
     class DataSource
     {
         private Hashtable m_hashData = new Hashtable();
+        private bool m_isInited = false;
 
         public DataSourceErr Init(string dataFile)
         {
@@ -84,12 +85,27 @@ namespace Cashier
 
             string str = linesCount.ToString() + " lines has been added.";
             Trace.WriteLine(str);
+
+            lock ((object)m_isInited)
+            {
+                m_isInited = true;
+            }
+
             return DataSourceErr.Success;
         }
 
         public Clothing GetClothing(string key)
         {
-            return (Clothing)m_hashData[key]; ;
+            
+            return null == key ? null : (Clothing)m_hashData[key]; ;
+        }
+
+        public bool IsInited()
+        {
+            lock ((object)m_isInited)
+            {
+                return m_isInited;
+            }
         }
     }
 }

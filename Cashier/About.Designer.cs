@@ -93,6 +93,7 @@
             this.MinimizeBox = false;
             this.Name = "About";
             this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "关于";
             this.Load += new System.EventHandler(this.About_Load);
             this.ResumeLayout(false);
