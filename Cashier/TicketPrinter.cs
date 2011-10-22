@@ -71,7 +71,7 @@ namespace Cashier
 
         private const string m_cutOffLine = "----------------------------------------";
         private const string m_doubleCutOffLine = "========================================";
-        private string m_ticketName = "哇哈哈童装世界";
+        private string m_ticketName = "娃哈哈童装世界";
         private string m_ticketNum = "小票号：   VIP： ";
         private string m_cashierName = "";
         private string m_mobilePhone = "";
@@ -129,19 +129,19 @@ namespace Cashier
             //sw.WriteLine(m_ticketNum);
             sw.WriteLine(dateTime);
             sw.WriteLine(m_doubleCutOffLine);
-            sw.WriteLine("品名/条码号              数量   原价   结算价");
+            sw.WriteLine("品名/条码号             数量  原价  结算价");
             
             foreach (SalesClothes item in m_clothesList)
             {
                 sw.WriteLine(item.Name);
 
-                string downLine = item.TagCode + "             " + item.Count + "   " + item.Price + "     " + item.SalePrice;
+                string downLine = item.TagCode + "            " + item.Count + "  " + item.Price + "   " + item.SalePrice;
                 sw.WriteLine(downLine);
                 
             }
             sw.WriteLine(m_cutOffLine);
 
-            string upOffStr = "优惠金额： " + m_upoffPrice + "                 合计：  " + m_factPrice;
+            string upOffStr = "优惠金额： " + m_upoffPrice + "           合计：  " + m_factPrice;
             sw.WriteLine(upOffStr);
 
             string realStr = "实收金额： " + m_factPrice;
