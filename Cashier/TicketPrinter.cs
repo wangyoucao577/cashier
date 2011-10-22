@@ -75,9 +75,9 @@ namespace Cashier
         private string m_ticketNum = "小票号：   VIP： ";
         private string m_cashierName = "";
         private string m_mobilePhone = "";
-        private string m_telPhone = "0523-82082991";
+        private string m_telPhone = "电话：0523-82082991";
         private string m_storeName = "专卖店：泰州店";
-        private string m_address = "泰州市海陵北路112号";
+        private string m_address = "地址：泰州市海陵北路112号";
         private string m_netAddress = "www.wahahatongzhuang.com";
         private string m_clause = "请妥善保管小票，七日内有问题凭小票调换。";
         private string m_welcome = "欢迎下次光临！";
@@ -129,19 +129,19 @@ namespace Cashier
             //sw.WriteLine(m_ticketNum);
             sw.WriteLine(dateTime);
             sw.WriteLine(m_doubleCutOffLine);
-            sw.WriteLine("品名/条码号     数量     原价     结算价");
-            sw.WriteLine(m_cutOffLine);
+            sw.WriteLine("品名/条码号              数量   原价   结算价");
+            
             foreach (SalesClothes item in m_clothesList)
             {
                 sw.WriteLine(item.Name);
 
-                string downLine = item.TagCode + "   " + item.Count + "     " + item.Price + "      " + item.SalePrice;
+                string downLine = item.TagCode + "             " + item.Count + "   " + item.Price + "     " + item.SalePrice;
                 sw.WriteLine(downLine);
-                sw.WriteLine(m_cutOffLine);
+                
             }
             sw.WriteLine(m_cutOffLine);
 
-            string upOffStr = "优惠金额： " + m_upoffPrice;
+            string upOffStr = "优惠金额： " + m_upoffPrice + "                 合计：  " + m_factPrice;
             sw.WriteLine(upOffStr);
 
             string realStr = "实收金额： " + m_factPrice;
@@ -156,13 +156,14 @@ namespace Cashier
             sw.WriteLine(m_telPhone);
             sw.WriteLine(m_welcome);
 
+            //切纸
             sw.WriteLine("\n\n\n\n\n\n");
 
 
             sw.Close();
             fs.Close();
 
-            //切纸
+            
             
             return PrinterErr.Success;
         }
