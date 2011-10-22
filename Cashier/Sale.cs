@@ -48,6 +48,69 @@ namespace Cashier
 
         private void button1_Click(object sender, EventArgs e)
         {
+            //检查是否输入已符合规范
+
+            if (dataGridView.Rows.Count <= 1)
+            {
+                MessageBox.Show("没有需要付款的项，请检查！");
+                return;
+            }
+            foreach (DataGridViewRow item in dataGridView.Rows)
+            {
+                if (    null != item.Cells[1].Value
+                    &&  !string.IsNullOrEmpty(item.Cells[1].Value.ToString()))
+                {
+                    //有商品标签代码
+
+                    if (    null == item.Cells[2].Value
+                        ||  string.IsNullOrEmpty(item.Cells[2].Value.ToString()))
+                    {
+                        //但是没有找到相应的商品名称
+
+                        MessageBox.Show("商品填写不正确，请检查标签代码！");
+                        return;
+                    }
+
+                    if (    null == item.Cells[3].Value
+                        ||  string.IsNullOrEmpty(item.Cells[3].Value.ToString())
+                        ||  !ValueMarked.CheckMoney(item.Cells[3].Value.ToString()))
+                    {
+                        //原价没有填
+
+                        MessageBox.Show("原价填写不正确，请检查！");
+                        return;
+                    }
+
+                    if (null == item.Cells[5].Value
+                        || string.IsNullOrEmpty(item.Cells[5].Value.ToString())
+                        || !ValueMarked.CheckMoney(item.Cells[5].Value.ToString()))
+                    {
+                        //结算价没有填
+
+                        MessageBox.Show("结算价填写不正确，请检查！");
+                        return;
+                    }
+
+                    if (null == item.Cells[7].Value
+                        || string.IsNullOrEmpty(item.Cells[7].Value.ToString())
+                        || !ValueMarked.CheckMoney(item.Cells[7].Value.ToString()))
+                    {
+                        //金额价没有填
+
+                        MessageBox.Show("金额填写不正确，请检查！");
+                        return;
+                    }
+                }
+            }
+
+            if (    string.IsNullOrEmpty(saleRecvTextBox.Text)
+                ||  !ValueMarked.CheckMoney(saleRecvTextBox.Text))
+            {
+                MessageBox.Show("应付金额填写不正确，请检查！");
+                return;
+            }
+
+            //检查是否有付款页面已经打开
             if (null == m_sc)
             {
                 m_sc = new SaleConfirm();
@@ -69,19 +132,21 @@ namespace Cashier
                             &&  item.Cells[4].Value != null
                             &&  item.Cells[5].Value != null
                             &&  item.Cells[6].Value != null
+                            &&  item.Cells[7].Value != null
                             &&  !string.IsNullOrEmpty(item.Cells[1].Value.ToString())
                             &&  !string.IsNullOrEmpty(item.Cells[2].Value.ToString())
                             &&  !string.IsNullOrEmpty(item.Cells[3].Value.ToString())
                             &&  !string.IsNullOrEmpty(item.Cells[4].Value.ToString())
                             &&  !string.IsNullOrEmpty(item.Cells[5].Value.ToString())
-                            &&  !string.IsNullOrEmpty(item.Cells[6].Value.ToString()))
+                            &&  !string.IsNullOrEmpty(item.Cells[6].Value.ToString())
+                            &&  !string.IsNullOrEmpty(item.Cells[7].Value.ToString()))
                         {
                             SalesClothes sc = new SalesClothes();
                             sc.TagCode = item.Cells[1].Value.ToString();
                             sc.Name = item.Cells[2].Value.ToString();
                             sc.Price = item.Cells[3].Value.ToString();
-                            sc.Count = item.Cells[5].Value.ToString();
-                            sc.SalePrice = item.Cells[6].Value.ToString();
+                            sc.Count = item.Cells[6].Value.ToString();
+                            sc.SalePrice = item.Cells[7].Value.ToString();
 
                             tp.AddItem(sc);
                         }
@@ -143,38 +208,108 @@ namespace Cashier
                     dataGridView[2, e.RowIndex].Value = clo.Name;
                 }
             }
-            else if (4 == e.ColumnIndex || 5 == e.ColumnIndex)
+            else if (4 == e.ColumnIndex || 5 == e.ColumnIndex || 6 == e.ColumnIndex)
             {
-                if (    null != dataGridView[4, e.RowIndex].Value
-                    &&  null != dataGridView[5, e.RowIndex].Value
-                    &&  !string.IsNullOrEmpty(dataGridView[4, e.RowIndex].Value.ToString())
-                    &&  !string.IsNullOrEmpty(dataGridView[5, e.RowIndex].Value.ToString()))
+                if (4 == e.ColumnIndex)
                 {
-                    double factPrice;
-                    int count;
-                    if(     double.TryParse(dataGridView[4, e.RowIndex].Value.ToString(), out factPrice)
-                        &&  int.TryParse(dataGridView[5, e.RowIndex].Value.ToString(), out count))
+                    //折扣变化，则根据原价修改结算价
+
+                    if (    null != dataGridView[3, e.RowIndex].Value
+                        &&  null != dataGridView[4, e.RowIndex].Value
+                        &&  !string.IsNullOrEmpty(dataGridView[3, e.RowIndex].Value.ToString())
+                        &&  !string.IsNullOrEmpty(dataGridView[4, e.RowIndex].Value.ToString()))
                     {
-                        dataGridView[6, e.RowIndex].Value = factPrice * count;
+                        int oldPrice;
+                        int discount;
+                        if (    int.TryParse(dataGridView[3, e.RowIndex].Value.ToString(), out oldPrice)
+                            && int.TryParse(dataGridView[4, e.RowIndex].Value.ToString(), out discount)
+                            &&  oldPrice > 0
+                            &&  discount > 0
+                            &&  discount <= 100)
+                        {
+                            dataGridView[5, e.RowIndex].Value = oldPrice * discount / 100;
+                        }
+                    }
+                }
+                else if (5 == e.ColumnIndex)
+                {
+                    //结算价变化，则根据原价计算折扣
+                    if (null != dataGridView[3, e.RowIndex].Value
+                    && null != dataGridView[5, e.RowIndex].Value
+                    && !string.IsNullOrEmpty(dataGridView[3, e.RowIndex].Value.ToString())
+                    && !string.IsNullOrEmpty(dataGridView[5, e.RowIndex].Value.ToString()))
+                    {
+                        int oldPrice;
+                        int newPrice;
+                        if (int.TryParse(dataGridView[3, e.RowIndex].Value.ToString(), out oldPrice)
+                            && int.TryParse(dataGridView[5, e.RowIndex].Value.ToString(), out newPrice)
+                            && oldPrice > 0
+                            && newPrice > 0
+                            && newPrice <= oldPrice)
+                        {
+                            dataGridView[4, e.RowIndex].Value = newPrice * 100 / oldPrice;
+                        }
+                    }
+                }
+
+
+                //结算价或数量或折扣变化，则计算金额
+                if (    null != dataGridView[5, e.RowIndex].Value
+                    &&  null != dataGridView[6, e.RowIndex].Value
+                    &&  !string.IsNullOrEmpty(dataGridView[5, e.RowIndex].Value.ToString())
+                    &&  !string.IsNullOrEmpty(dataGridView[6, e.RowIndex].Value.ToString()))
+                {
+                    int factPrice;
+                    int count;
+                    if(     int.TryParse(dataGridView[5, e.RowIndex].Value.ToString(), out factPrice)
+                        &&  int.TryParse(dataGridView[6, e.RowIndex].Value.ToString(), out count))
+                    {
+                        dataGridView[7, e.RowIndex].Value = factPrice * count;
                     }
                     
                 }
+
+                
             }
+            else if (3 == e.ColumnIndex)
+            {
+                //原价变化，则根据结算价修改折扣
+
+                if (    null != dataGridView[3, e.RowIndex].Value
+                    &&  null != dataGridView[5, e.RowIndex].Value
+                    &&  !string.IsNullOrEmpty(dataGridView[3, e.RowIndex].Value.ToString())
+                    &&  !string.IsNullOrEmpty(dataGridView[5, e.RowIndex].Value.ToString()))
+                {
+                    int oldPrice;
+                    int newPrice;
+                    if (    int.TryParse(dataGridView[3, e.RowIndex].Value.ToString(), out oldPrice)
+                        &&  int.TryParse(dataGridView[5, e.RowIndex].Value.ToString(), out newPrice)
+                        &&  oldPrice > 0 
+                        &&  newPrice > 0
+                        &&  newPrice <= oldPrice)
+                    {
+                        dataGridView[4, e.RowIndex].Value = newPrice * 100 / oldPrice;
+                    }
+                }
+                
+            }
+             
+
             
             //金额有改动，则修改应付款和优惠金额
-
-            double prices = 0.0, salesPrices = 0.0;
+            
+            int prices = 0, salesPrices = 0;
             foreach (DataGridViewRow item in dataGridView.Rows)
             {
-                double price; 
+                int price; 
                 int count;
-                if (    null != item.Cells[3].Value && double.TryParse(item.Cells[3].Value.ToString(), out price)
-                    && null != item.Cells[5].Value && int.TryParse(item.Cells[5].Value.ToString(), out count))
+                if (    null != item.Cells[3].Value && int.TryParse(item.Cells[3].Value.ToString(), out price)
+                    && null != item.Cells[6].Value && int.TryParse(item.Cells[6].Value.ToString(), out count))
                 {
                     prices += (price * count);
                 }
 
-                if (null != item.Cells[6].Value && double.TryParse(item.Cells[6].Value.ToString(), out price))
+                if (null != item.Cells[7].Value && int.TryParse(item.Cells[7].Value.ToString(), out price))
                 {
                     salesPrices += price;
                 }
@@ -192,9 +327,62 @@ namespace Cashier
 
         private void dataGridView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            if (3 == e.ColumnIndex || 4 == e.ColumnIndex || 6 == e.ColumnIndex)
+            if (3 == e.ColumnIndex || 5 == e.ColumnIndex || 7 == e.ColumnIndex)
             {
-                if (!string.IsNullOrEmpty(e.FormattedValue.ToString()) && !ValueMarked.CheckMoney(e.FormattedValue.ToString()))
+                int oldPrice;
+                int newPrice;
+                if (   !string.IsNullOrEmpty(e.FormattedValue.ToString()) 
+                   &&  !ValueMarked.CheckMoney(e.FormattedValue.ToString()))
+                {
+                    //非货币
+                    e.Cancel = true;
+                    this.dataGridView.CancelEdit();
+                }
+                else if (e.ColumnIndex == 3)
+                {
+                    if (dataGridView[5, e.RowIndex].Value != null
+                    &&  int.TryParse(e.FormattedValue.ToString(), out oldPrice)
+                    &&  int.TryParse(dataGridView[5, e.RowIndex].Value.ToString(), out newPrice)
+                    &&  newPrice > oldPrice)
+                    {
+                        //结算价高于原价
+                        e.Cancel = true;
+                        this.dataGridView.CancelEdit();
+                    }
+                }
+                else if (e.ColumnIndex == 5)
+                {
+                    if (dataGridView[3, e.RowIndex].Value != null
+                    && int.TryParse(e.FormattedValue.ToString(), out newPrice)
+                    && int.TryParse(dataGridView[3, e.RowIndex].Value.ToString(), out oldPrice)
+                    && newPrice > oldPrice)
+                    {
+                        //结算价高于原价
+                        e.Cancel = true;
+                        this.dataGridView.CancelEdit();
+                    }
+                }
+                
+            }
+            else if (4 == e.ColumnIndex)
+            {
+                int discount;
+                if (    string.IsNullOrEmpty(e.FormattedValue.ToString()) 
+                    ||  !int.TryParse(e.FormattedValue.ToString(), out discount)
+                    ||  discount > 100
+                    ||  discount <= 0)
+                {
+                    e.Cancel = true;
+                    this.dataGridView.CancelEdit();
+                }
+            }
+            else if (6 == e.ColumnIndex)
+            {
+                int count;
+                if (string.IsNullOrEmpty(e.FormattedValue.ToString())
+                    || !int.TryParse(e.FormattedValue.ToString(), out count)
+                    || count > 999
+                    || count <= 0)
                 {
                     e.Cancel = true;
                     this.dataGridView.CancelEdit();
@@ -206,22 +394,19 @@ namespace Cashier
 
         private void dataGridView_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
-            //dataGridView[5, e.RowIndex].Value = 1;
-
-            //foreach (DataGridViewRow item in dataGridView.Rows)
-            //{
-            //    item.Cells[0].Value = item.Index + 1;
-            //}
+            
         }
 
         private void dataGridView_DefaultValuesNeeded(object sender, DataGridViewRowEventArgs e)
         {
             
             e.Row.Cells[0].Value = e.Row.Index + 1;
-            e.Row.Cells[3].Value = 0.0;
-            e.Row.Cells[4].Value = 0.0;
-            e.Row.Cells[5].Value = 1;
-            e.Row.Cells[6].Value = 0.0;
+            e.Row.Cells[3].Value = null;
+            e.Row.Cells[4].Value = 100;
+            e.Row.Cells[5].Value = null;
+            e.Row.Cells[6].Value = 1;
+            e.Row.Cells[7].Value = null;
+
 
         }
 

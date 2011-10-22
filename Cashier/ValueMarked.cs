@@ -14,34 +14,44 @@ namespace Cashier
         public static bool CheckMoney(string money)
         {
             bool flag = true;
-            int count = 0;
+            //int count = 0;
             if (money.Length == 0)
             {
                 flag = false;
             }
             else
             {
-                char[] x = money.ToCharArray();
-                for (int i = 0; i < money.Length; i++)
+                int moneyNum;
+                if (    int.TryParse(money, out moneyNum)
+                    &&  moneyNum > 0)
                 {
-                    if (!char.IsNumber(x[i]) && x[i] != '.')
-                    {
-                        flag = false;
-                        break;
-                    }
-                    if (x[i] == '.')
-                    {
-                        count++;
-                        //if (i == 0 || i == money.Length - 1)
-                        //{
-                        //    flag = false;
-                        //}
-                    }
+                    flag = true;
                 }
-                if (count > 1)
+                else
                 {
                     flag = false;
                 }
+                //char[] x = money.ToCharArray();
+                //for (int i = 0; i < money.Length; i++)
+                //{
+                //    if (!char.IsNumber(x[i]) && x[i] != '.')
+                //    {
+                //        flag = false;
+                //        break;
+                //    }
+                //    if (x[i] == '.')
+                //    {
+                //        count++;
+                //        //if (i == 0 || i == money.Length - 1)
+                //        //{
+                //        //    flag = false;
+                //        //}
+                //    }
+                //}
+                //if (count > 1)
+                //{
+                //    flag = false;
+                //}
             }
             return flag;
         }

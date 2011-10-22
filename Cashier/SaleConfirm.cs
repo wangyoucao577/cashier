@@ -39,11 +39,11 @@ namespace Cashier
             }
 
             //计算应找零的值
-            double wantPrice, faceRecv;
+            int wantPrice, faceRecv;
             if (    !string.IsNullOrEmpty(salesRecvTextBox.Text)
-                &&  double.TryParse(salesRecvTextBox.Text, out wantPrice)
+                &&  int.TryParse(salesRecvTextBox.Text, out wantPrice)
                 &&  !string.IsNullOrEmpty(FactRecvTextBox.Text)
-                &&  double.TryParse(FactRecvTextBox.Text, out faceRecv))
+                &&  int.TryParse(FactRecvTextBox.Text, out faceRecv))
             {
                 returnBackTextBox.Text = (faceRecv - wantPrice).ToString();
             }

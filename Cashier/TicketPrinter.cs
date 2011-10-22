@@ -70,7 +70,7 @@ namespace Cashier
             );
 
         private const string m_cutOffLine = "----------------------------------------";
-        private const string m_doubleCutOffLine = "========================================";
+        private const string m_intCutOffLine = "========================================";
         private string m_ticketName = "娃哈哈童装世界";
         private string m_ticketNum = "小票号：   VIP： ";
         private string m_cashierName = "";
@@ -128,7 +128,7 @@ namespace Cashier
             sw.WriteLine(m_storeName);
             //sw.WriteLine(m_ticketNum);
             sw.WriteLine(dateTime);
-            sw.WriteLine(m_doubleCutOffLine);
+            sw.WriteLine(m_intCutOffLine);
             sw.WriteLine("品名/条码号             数量  原价  结算价");
             
             foreach (SalesClothes item in m_clothesList)
