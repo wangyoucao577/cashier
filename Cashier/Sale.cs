@@ -270,7 +270,14 @@ namespace Cashier
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            dataGridView.Rows.Remove(dataGridView.CurrentRow);
+            if (    null != dataGridView.CurrentRow 
+                &&  dataGridView.CurrentRow.Index < dataGridView.Rows.Count - 1)
+            {
+                
+                dataGridView.Rows.Remove(dataGridView.CurrentRow);
+
+            }
+            
         }
 
         private void clearButton_Click(object sender, EventArgs e)
@@ -278,6 +285,15 @@ namespace Cashier
             dataGridView.Rows.Clear();
             upOffTextBox.Text = "";
             saleRecvTextBox.Text = "";
+        }
+
+        private void dataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+
+            foreach (DataGridViewRow item in dataGridView.Rows)
+            {
+                item.Cells[0].Value = item.Index + 1;
+            }
         }
 
     }
