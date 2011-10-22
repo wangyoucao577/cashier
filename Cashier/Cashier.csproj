@@ -90,7 +90,9 @@
     <Compile Include="SaleConfirm.Designer.cs">
       <DependentUpon>SaleConfirm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TicketPrinter.cs" />
     <Compile Include="ValueMarked.cs" />
+    <Compile Include="ZQPort.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="图标.ico" />

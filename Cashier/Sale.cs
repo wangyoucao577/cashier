@@ -13,6 +13,7 @@ namespace Cashier
     {
         private DataSource m_dataSource = new DataSource();
         private string faceSalesPrice = "";
+        SaleConfirm m_sc = null;
 
         public Sale()
         {
@@ -47,9 +48,71 @@ namespace Cashier
 
         private void button1_Click(object sender, EventArgs e)
         {
-            SaleConfirm sc = new SaleConfirm();
-            sc.SetSalesRecv(saleRecvTextBox.Text);
-            sc.Show();
+            if (null == m_sc)
+            {
+                m_sc = new SaleConfirm();
+                m_sc.SetSalesRecv(saleRecvTextBox.Text);
+                DialogResult dr = m_sc.ShowDialog();
+                
+                if (dr == DialogResult.OK)
+                {
+                    //打印发票
+
+                    TicketPrinter tp = new TicketPrinter();
+                    
+
+                    foreach (DataGridViewRow item in dataGridView.Rows)
+                    {
+                        if (    item.Cells[1].Value != null
+                            &&  item.Cells[2].Value != null
+                            &&  item.Cells[3].Value != null
+                            &&  item.Cells[4].Value != null
+                            &&  item.Cells[5].Value != null
+                            &&  item.Cells[6].Value != null
+                            &&  !string.IsNullOrEmpty(item.Cells[1].Value.ToString())
+                            &&  !string.IsNullOrEmpty(item.Cells[2].Value.ToString())
+                            &&  !string.IsNullOrEmpty(item.Cells[3].Value.ToString())
+                            &&  !string.IsNullOrEmpty(item.Cells[4].Value.ToString())
+                            &&  !string.IsNullOrEmpty(item.Cells[5].Value.ToString())
+                            &&  !string.IsNullOrEmpty(item.Cells[6].Value.ToString()))
+                        {
+                            SalesClothes sc = new SalesClothes();
+                            sc.Name = item.Cells[2].Value.ToString();
+                            sc.TagCode = item.Cells[1].Value.ToString();
+                            sc.Count = item.Cells[3].Value.ToString();
+                            sc.Price = item.Cells[4].Value.ToString();
+                            sc.SalePrice = item.Cells[5].Value.ToString();
+
+                            tp.AddItem(sc);
+                        }
+                    }
+
+                    if (    !string.IsNullOrEmpty(upOffTextBox.Text)
+                        &&  !string.IsNullOrEmpty(saleRecvTextBox.Text))
+                    {
+                        tp.SetPrices(upOffTextBox.Text, saleRecvTextBox.Text);
+                    }
+
+                    PrinterErr perr = tp.Print();
+                    switch (perr)
+                    {
+
+                        case PrinterErr.NoLPTPrinter:
+                            MessageBox.Show("找不到LPT打印机，请检查打印机的连接！");
+                            break;
+                        case PrinterErr.CanNotOpenPrinter:
+                            MessageBox.Show("无法打开LPT1打印机，请检查打印机的端口是否正确！");
+                            break;
+                        case PrinterErr.Success:
+                        default:
+                            MessageBox.Show("发票打印成功！");
+                            break;
+                    }
+                }
+
+                m_sc = null;
+            }
+            
         }
 
         private void Sale_Load(object sender, EventArgs e)
