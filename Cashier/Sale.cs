@@ -268,5 +268,17 @@ namespace Cashier
             }
         }
 
+        private void deleteButton_Click(object sender, EventArgs e)
+        {
+            dataGridView.Rows.Remove(dataGridView.CurrentRow);
+        }
+
+        private void clearButton_Click(object sender, EventArgs e)
+        {
+            dataGridView.Rows.Clear();
+            upOffTextBox.Text = "";
+            saleRecvTextBox.Text = "";
+        }
+
     }
 }
