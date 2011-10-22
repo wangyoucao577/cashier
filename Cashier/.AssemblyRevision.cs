@@ -24,14 +24,14 @@ internal static class AssemblyRevision
     public const string Major = "1";
     public const string Minor = "0";
     public const string Build = "0";
-    public const string Revision = "7";
+    public const string Revision = "8";
 
     public const string MainVersion = Major + "." + Minor;
     public const string FullVersion = Major + "." + Minor + "." + Build + "." + Revision;
 
-    public const string BuildTime = "2011/10/22 01:28:38";
-    public const string RevisionRange = "2:7";
-    public const bool RevisionMixed = true;
+    public const string BuildTime = "2011/10/22 12:57:38";
+    public const string RevisionRange = "8";
+    public const bool RevisionMixed = false;
     public const bool RevisionModified = true;
 
     #warning Revision modified 
