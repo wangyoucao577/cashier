@@ -69,15 +69,15 @@ namespace Cashier
 
             );
 
-        private const string m_cutOffLine = "---------------------------------------------";
-        private const string m_doubleCutOffLine = "=============================================";
+        private const string m_cutOffLine = "----------------------------------------";
+        private const string m_doubleCutOffLine = "========================================";
         private string m_ticketName = "哇哈哈童装世界";
         private string m_ticketNum = "小票号：   VIP： ";
         private string m_cashierName = "";
         private string m_mobilePhone = "";
-        private string m_telPhone = "0523-";
-        private string m_storeName = "专卖店：泰州万达店";
-        private string m_address = "泰州市";
+        private string m_telPhone = "0523-82082991";
+        private string m_storeName = "专卖店：泰州店";
+        private string m_address = "泰州市海陵北路112号";
         private string m_netAddress = "www.wahahatongzhuang.com";
         private string m_clause = "请妥善保管小票，七日内有问题凭小票调换。";
         private string m_welcome = "欢迎下次光临！";
@@ -119,14 +119,14 @@ namespace Cashier
             //获取日期时间
             System.DateTime currentTime = new System.DateTime();
             currentTime = System.DateTime.Now;
-            string dateTime = currentTime.ToString("yyyy-MM-dd HH:mm:ss" + Environment.NewLine);
+            string dateTime = currentTime.ToString("yyyy-MM-dd HH:mm:ss");
 
             //打印数据
             FileStream fs = new FileStream(iHandle, FileAccess.ReadWrite);
             StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.GetEncoding("GB18030"));   //写数据 
             sw.WriteLine(m_ticketName);
             sw.WriteLine(m_storeName);
-            sw.WriteLine(m_ticketNum);
+            //sw.WriteLine(m_ticketNum);
             sw.WriteLine(dateTime);
             sw.WriteLine(m_doubleCutOffLine);
             sw.WriteLine("品名/条码号     数量     原价     结算价");
@@ -135,7 +135,7 @@ namespace Cashier
             {
                 sw.WriteLine(item.Name);
 
-                string downLine = item.TagCode + "   " + item.Count + "   " + item.Price + "   " + item.SalePrice;
+                string downLine = item.TagCode + "   " + item.Count + "     " + item.Price + "      " + item.SalePrice;
                 sw.WriteLine(downLine);
                 sw.WriteLine(m_cutOffLine);
             }
@@ -148,19 +148,12 @@ namespace Cashier
             sw.WriteLine(realStr);
 
             sw.WriteLine("");
-            sw.WriteLine("");
+            
 
             sw.WriteLine(m_clause);
-            
-            sw.WriteLine("");
-
             sw.WriteLine(m_netAddress);
             sw.WriteLine(m_address);
             sw.WriteLine(m_telPhone);
-            sw.WriteLine(m_mobilePhone);
-
-            sw.WriteLine("");
-
             sw.WriteLine(m_welcome);
 
             sw.WriteLine("\n\n\n\n\n\n");

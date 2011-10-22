@@ -77,11 +77,11 @@ namespace Cashier
                             &&  !string.IsNullOrEmpty(item.Cells[6].Value.ToString()))
                         {
                             SalesClothes sc = new SalesClothes();
-                            sc.Name = item.Cells[2].Value.ToString();
                             sc.TagCode = item.Cells[1].Value.ToString();
-                            sc.Count = item.Cells[3].Value.ToString();
-                            sc.Price = item.Cells[4].Value.ToString();
-                            sc.SalePrice = item.Cells[5].Value.ToString();
+                            sc.Name = item.Cells[2].Value.ToString();
+                            sc.Price = item.Cells[3].Value.ToString();
+                            sc.Count = item.Cells[5].Value.ToString();
+                            sc.SalePrice = item.Cells[6].Value.ToString();
 
                             tp.AddItem(sc);
                         }
@@ -106,6 +106,9 @@ namespace Cashier
                         case PrinterErr.Success:
                         default:
                             MessageBox.Show("发票打印成功！");
+                            dataGridView.Rows.Clear();
+                            upOffTextBox.Text = "";
+                            saleRecvTextBox.Text = "";
                             break;
                     }
                 }
@@ -163,10 +166,12 @@ namespace Cashier
             double prices = 0.0, salesPrices = 0.0;
             foreach (DataGridViewRow item in dataGridView.Rows)
             {
-                double price;
-                if (null != item.Cells[3].Value && double.TryParse(item.Cells[3].Value.ToString(), out price))
+                double price; 
+                int count;
+                if (    null != item.Cells[3].Value && double.TryParse(item.Cells[3].Value.ToString(), out price)
+                    && null != item.Cells[5].Value && int.TryParse(item.Cells[5].Value.ToString(), out count))
                 {
-                    prices += price;
+                    prices += (price * count);
                 }
 
                 if (null != item.Cells[6].Value && double.TryParse(item.Cells[6].Value.ToString(), out price))
