@@ -306,8 +306,8 @@ namespace Cashier
 
             
             //金额有改动，则修改应付款和优惠金额
-            
-            int prices = 0, salesPrices = 0;
+
+            int prices = 0, salesPrices = 0, upOffPrices = 0;
             foreach (DataGridViewRow item in dataGridView.Rows)
             {
                 int price; 
@@ -315,17 +315,24 @@ namespace Cashier
                 if (    null != item.Cells[3].Value && int.TryParse(item.Cells[3].Value.ToString(), out price)
                     && null != item.Cells[6].Value && int.TryParse(item.Cells[6].Value.ToString(), out count))
                 {
-                    prices += (price * count);
+                    prices = (price * count);
                 }
 
-                if (null != item.Cells[7].Value && int.TryParse(item.Cells[7].Value.ToString(), out price))
+                int salePrice;
+                if (null != item.Cells[7].Value && int.TryParse(item.Cells[7].Value.ToString(), out salePrice))
                 {
-                    salesPrices += price;
+                    salesPrices += salePrice;
+
+                    if (salePrice > 0)
+                    {
+                        upOffPrices += prices - salePrice;
+                    }
                 }
+
             }
 
             saleRecvTextBox.Text = salesPrices.ToString();
-            upOffTextBox.Text = (prices - salesPrices).ToString();
+            upOffTextBox.Text = upOffPrices.ToString();
             
         }
 
@@ -349,27 +356,48 @@ namespace Cashier
                 }
                 else if (e.ColumnIndex == 3)
                 {
-                    if (dataGridView[5, e.RowIndex].Value != null
-                    &&  int.TryParse(e.FormattedValue.ToString(), out oldPrice)
-                    &&  int.TryParse(dataGridView[5, e.RowIndex].Value.ToString(), out newPrice)
-                    &&  newPrice > oldPrice)
+                    if (int.TryParse(e.FormattedValue.ToString(), out oldPrice))
                     {
-                        //结算价高于原价
-                        e.Cancel = true;
-                        this.dataGridView.CancelEdit();
+                        if (oldPrice < 0)
+                        {
+                            //原价输入负值
+                            e.Cancel = true;
+                            this.dataGridView.CancelEdit();
+                        }
+
+                        if (dataGridView[5, e.RowIndex].Value != null
+                           &&   int.TryParse(dataGridView[5, e.RowIndex].Value.ToString(), out newPrice)
+                           &&   newPrice > oldPrice)
+                        {
+                                                        //结算价高于原价或原价输入负值
+                            e.Cancel = true;
+                            this.dataGridView.CancelEdit();
+                        }
                     }
+
                 }
                 else if (e.ColumnIndex == 5)
                 {
-                    if (dataGridView[3, e.RowIndex].Value != null
-                    && int.TryParse(e.FormattedValue.ToString(), out newPrice)
-                    && int.TryParse(dataGridView[3, e.RowIndex].Value.ToString(), out oldPrice)
-                    && newPrice > oldPrice)
+
+                    if (int.TryParse(e.FormattedValue.ToString(), out newPrice))
                     {
-                        //结算价高于原价
-                        e.Cancel = true;
-                        this.dataGridView.CancelEdit();
+                        if (newPrice < 0)
+                        {
+                            //结算价输入负值
+                            e.Cancel = true;
+                            this.dataGridView.CancelEdit();
+                        }
+
+                        if (dataGridView[3, e.RowIndex].Value != null
+                           && int.TryParse(dataGridView[3, e.RowIndex].Value.ToString(), out oldPrice)
+                           && newPrice > oldPrice)
+                        {
+                            //结算价高于原价
+                            e.Cancel = true;
+                            this.dataGridView.CancelEdit();
+                        }
                     }
+
                 }
                 
             }
@@ -391,7 +419,7 @@ namespace Cashier
                 if (string.IsNullOrEmpty(e.FormattedValue.ToString())
                     || !int.TryParse(e.FormattedValue.ToString(), out count)
                     || count > 999
-                    || count <= 0)
+                    || count < -999)
                 {
                     e.Cancel = true;
                     this.dataGridView.CancelEdit();
