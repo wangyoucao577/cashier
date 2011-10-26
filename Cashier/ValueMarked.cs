@@ -22,8 +22,8 @@ namespace Cashier
             else
             {
                 int moneyNum;
-                if (    int.TryParse(money, out moneyNum)
-                    &&  moneyNum > 0)
+                if (    int.TryParse(money, out moneyNum))
+                    //&&  moneyNum > 0) //退货时需要打出来负数的发票
                 {
                     flag = true;
                 }

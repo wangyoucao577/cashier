@@ -223,11 +223,20 @@ namespace Cashier
                         int discount;
                         if (    int.TryParse(dataGridView[3, e.RowIndex].Value.ToString(), out oldPrice)
                             && int.TryParse(dataGridView[4, e.RowIndex].Value.ToString(), out discount)
-                            &&  oldPrice > 0
                             &&  discount > 0
-                            &&  discount <= 100)
+                            &&  discount <= 100
+                            &&  oldPrice >= 0)
                         {
-                            dataGridView[5, e.RowIndex].Value = oldPrice * discount / 100;
+                            double new_price = (double)oldPrice * discount / 100;
+                            if ((double)(int)new_price == new_price)
+                            {
+                                dataGridView[5, e.RowIndex].Value = (int)new_price;
+                            }
+                            else
+                            {
+                                dataGridView[5, e.RowIndex].Value = (int)new_price + 1;
+                            }
+                            
                         }
                     }
                 }
